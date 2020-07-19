@@ -42,6 +42,7 @@ class Game
         @gf.display
         @answer = @word.map {|letter| @guessed_letters.any?(letter) ? letter : "_" }.join
         puts @answer
+        puts "Used letters: #{@guessed_letters.map(&:upcase).join(' ')}"
         check_win
     end
 
