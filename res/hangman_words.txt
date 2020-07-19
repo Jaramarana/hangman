@@ -121,6 +121,3 @@ weathering
 whispering
 wordiness
 young
-poo
-fart
-wee
