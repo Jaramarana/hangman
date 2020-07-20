@@ -1,11 +1,10 @@
 require_relative "../res/hang_man_frames"
-
+require 'yaml'
 
 class GameFrame
 
-    attr_reader :index
-    def initialize(game,index = 0)
-        @game = game
+    attr_accessor :index
+    def initialize(index = 0)
         @index = index
         @frames = Resources::HANGMANFRAMES        
     end
@@ -19,17 +18,27 @@ class GameFrame
         @index = [@index + 1,@frames.length-1].min
         display 
     end
-end
+
+    def encode_with coder
+        coder["index"] = @index    
+    end
+    
+
+end #class end
 
 
 class Game
 
-    attr_reader :win, :bad_guess_index
+    attr_accessor :gf, :word, :guessed_letters, :win
 
-    def initialize(gf)
+    def initialize(
+            gf,
+            word = File.open("./res/hangman_words.txt").readlines.sample.chomp.split(''),
+            guessed_letters = []
+        )
         @gf = gf
-        @word = File.open("./res/hangman_words.txt").readlines.sample.chomp.split('')
-        @guessed_letters = []
+        @word = word
+        @guessed_letters = guessed_letters
         @win = false
         display
 
@@ -58,7 +67,9 @@ class Game
         elsif letter == "" or letter == " "
             puts "Invalid selection"
             add_guess
-    
+            
+        elsif letter == "save"
+            save
         else
             @guessed_letters << letter
             adv = true
@@ -69,7 +80,13 @@ class Game
         end
         check_win
     end
-   
+
+    def encode_with coder
+        coder["gf"] = @gf   
+        coder["word"] = @word
+        coder["guessed_letters"] = @guessed_letters
+    end
+
     private
 
     def check_win
@@ -82,9 +99,16 @@ class Game
             exit
         end
     end
-end
+
+    def save
+        file_name = 'hg.sav'
+        File.open(file_name, 'w') {|f| f.write(self.to_yaml)}
+        puts "Saved as #{file_name}"
+        exit
+    end
+end #class end
  
-a = Game.new(GameFrame.new(self))
+a = Game.new(GameFrame.new)
 
 while !a.win do
     a.display

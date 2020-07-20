@@ -1,0 +1,17 @@
+--- !ruby/object:Game
+gf: !ruby/object:GameFrame
+  index: 2
+word:
+- f
+- i
+- n
+- e
+- s
+- p
+- u
+- n
+guessed_letters:
+- a
+- f
+- i
+- z
