@@ -57,7 +57,7 @@ class Game
         @answer = @word.map {|letter| @guessed_letters.any?(letter) ? letter : "_" }.join
         puts @answer
         puts "Used letters: #{@guessed_letters.map(&:upcase).join(' ')}"
-        puts "Ans:\t #{@word.join}" 
+        #puts "Ans:\t #{@word.join}" 
         add_guess
         
     end
@@ -65,7 +65,7 @@ class Game
     def add_guess
         check_win
         adv = false
-        puts "Add a guess:\n"
+        puts "Type \"save\" to save game\nAdd a guess:\n"
         letter = gets.chomp.downcase
         if @guessed_letters.any?(letter)
             puts "You've used that letter already. Try another one."
@@ -113,10 +113,12 @@ class Game
 
     def check_win
         if @answer.split('').any?("_") == false
+            system("clear")
             puts "Congratulations!\nGame Over"            
             exit
 
         elsif @gf.index >= 6
+            system("clear")
             puts "Sorry, You lose. Answer was #{@word.join}\nGame Over"
             exit
         end
